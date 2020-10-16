@@ -46,6 +46,10 @@ async def ws(websocket, path):
         print (get_time(),"User connected.")
 
         async for message in websocket:
+            if os.path.exists(output_audio_socket_old):
+                os.remove(output_audio_socket_old)
+            else:
+                print("Error")
             # test()
             if message == "Ok Google":
                 # beginning of Google's code
@@ -435,6 +439,7 @@ async def ws(websocket, path):
                                 await websocket.send(message)
                 await main(api_endpoint, credentials, project_id, device_model_id, device_id, device_config, lang, display, verbose, input_audio_file, output_audio_file, audio_sample_rate, audio_sample_width, audio_iter_size, audio_block_size, audio_flush_size, grpc_deadline, once)
                 await websocket.send("!" + "http://neosweather.ddns.net:8000/" + output_audio_socket)
+                output_audio_socket_old = output_audio_socket
 
 
 asyncio.get_event_loop().run_until_complete(websockets.serve(ws, 'localhost', 8765))
