@@ -38,6 +38,7 @@ import grpc
 import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.oauth2.credentials
+import glob
 
 async def ws(websocket, path):
     path_to_recordings = "C:\\Users\\koduf\\Documents\\GitHub\\GoogleSocket\\googlesamples\\assistant\\grpc\\recordings\\"
@@ -420,6 +421,9 @@ async def ws(websocket, path):
                 await websocket.send("!" + "http://neosweather.ddns.net:8000/" + output_audio_socket)
     except websockets.exceptions.ConnectionClosedError: 
         print(get_time(),"User disconnected")
+        files = glob.glob(path_to_recordings + "*")
+        for f in files:
+            os.remove(f)
     
 
 
