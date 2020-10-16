@@ -416,25 +416,6 @@ async def ws(websocket, path):
                     if input_audio_file or True:
                         await assistant.assist()
                         return
-
-                    # If no file arguments supplied:
-                    # keep recording voice requests using the microphone
-                    # and playing back assistant response using the speaker.
-                    # When the once flag is set, don't wait for a trigger. Otherwise, wait.
-                    wait_for_user_trigger = not once
-                    while True:
-                        # if not wait_for_user_trigger:
-                            # click.pause(info='Press Enter to send a new request...')
-                        continue_conversation = await assistant.assist()
-                        # wait for user trigger if there is no follow-up turn in
-                        # the conversation.
-                        wait_for_user_trigger = not continue_conversation
-
-                        # If we only want one conversation, break.
-                        if once and (not continue_conversation):
-                            break    
-                        else: 
-                            await websocket.send(message)
             await main(api_endpoint, credentials, project_id, device_model_id, device_id, device_config, lang, display, verbose, input_audio_file, output_audio_file, audio_sample_rate, audio_sample_width, audio_iter_size, audio_block_size, audio_flush_size, grpc_deadline, once)
             await websocket.send("!" + "http://neosweather.ddns.net:8000/" + output_audio_socket)
 
